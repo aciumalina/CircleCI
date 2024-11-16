@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   run-unit-tests:
     docker:
-      - image: maven:3.9.5-openjdk-19-slim
+      - image: maven:3.9.1-amazoncorretto-19
     steps:
       - checkout  # Pasul pentru a verifica codul din repo-ul tău
       - run:
