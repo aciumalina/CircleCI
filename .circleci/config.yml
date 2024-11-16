@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   run-unit-tests:
     docker:
-      - image: openjdk:19-jdk-alpine3.16
+      - image: maven:3.9.5-openjdk-19-slim
     steps:
       - checkout  # Pasul pentru a verifica codul din repo-ul tău
       - run:
