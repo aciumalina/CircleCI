@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   run-unit-tests:
     docker:
-      - image: cimg/openjdk:8.0.432-node
+      - image: openjdk:19-jdk-alpine3.16
     steps:
       - checkout  # Pasul pentru a verifica codul din repo-ul tău
       - run:
