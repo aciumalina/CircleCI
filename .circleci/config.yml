@@ -5,16 +5,19 @@ jobs:
     docker:
       - image: maven:3.9.1-amazoncorretto-19
     steps:
-      - checkout  # Pasul pentru a verifica codul din repo-ul tău
+      - checkout
       - run:
           name: Install dependencies
           command: |
-             mvn install -DskipTests  # Pentru proiectele Maven
+            mvn install -DskipTests
       - run:
           name: Run unit tests
           command: |
-             mvn test
+            mvn test
+    executor: docker-executor
+
 workflows:
+  version: 2
   test-workflow:
     jobs:
       - run-unit-tests
