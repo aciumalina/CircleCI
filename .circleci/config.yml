@@ -19,7 +19,8 @@ jobs:
           name: Run unit tests
           command: |
             mvn test
-
+      - store_test_results:
+          destination: tests-results
   run-lint-code:
     executor: java-19-docker
     steps:
@@ -42,8 +43,7 @@ jobs:
           destination: build-artifacts
 
   build_and_push:
-    docker:
-      - image: cimg/python:3.8
+    machine: true
     steps:
       - checkout
       - run:
