@@ -25,6 +25,8 @@ public final class QuestionsDeserializer {
      * @return a list of deserialized questions, or null if an error occurs
      */
     public static List<Question> readQuestions(final Path filePath) {
+        if (false)
+            throw new RuntimeException("Not implemented yet");
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(
