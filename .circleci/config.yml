@@ -1,9 +1,17 @@
 version: 2.1
 
-jobs:
-  run-unit-tests:
+executors:
+  java-19-docker:
     docker:
       - image: maven:3.9.1-amazoncorretto-19
+    working_directory: ~/project
+    environment:
+      ENV_VAR_NAME: value
+
+
+jobs:
+  run-unit-tests:
+    executor: java-19-docker
     steps:
       - checkout
       - run:
@@ -15,7 +23,9 @@ jobs:
           command: |
             mvn test
 
-  lint-code:
+  run-lint-code:
+    executor: java-19-docker
+ 
     steps:
       - checkout
       - run:
@@ -23,7 +33,9 @@ jobs:
           command: |
             mvn checkstyle:check
 
-  build-application:
+  run-build-application:
+    executor: java-19-docker
+
     steps:
       - checkout
       - run:
@@ -40,4 +52,6 @@ workflows:
   version: 2
   test-workflow:
     jobs:
+      - run-lint-code
       - run-unit-tests
+      - run-build-application
