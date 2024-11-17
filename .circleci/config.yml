@@ -19,8 +19,6 @@ jobs:
           name: Run unit tests
           command: |
             mvn test
-      - store_test_results:
-          path: test-results
 
   run-lint-code:
     executor: java-19-docker
@@ -77,6 +75,7 @@ jobs:
             docker push $DOCKER_USERNAME/mock-project-for-circleCI:$DOCKER_TAG
 
 workflows:
+  version: 2
   test-workflow:
     jobs:
       - run-lint-code
@@ -86,11 +85,11 @@ workflows:
   deploy-workflow:
     jobs:
       - build_and_push:
-          requires:
-            - run-build-application
           filters:
             branches:
               only: main
-          schedule:
-            - cron: "0 */2 * * *"
-          type: approval
+    schedule:
+      - cron: "0 */2 * * *"
+        filters:
+          branches:
+            only: main
