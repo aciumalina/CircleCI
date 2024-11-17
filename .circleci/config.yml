@@ -42,13 +42,9 @@ jobs:
           destination: build-artifacts
 
 workflows:
-  version: 2
   test-workflow:
     jobs:
       - run-lint-code
       - run-unit-tests
       - run-build-application
-    filters:
-      pull_requests:
-        only: main
 
