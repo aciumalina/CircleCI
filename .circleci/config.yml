@@ -19,7 +19,7 @@ jobs:
           name: Run unit tests
           command: |
             mvn test
-            
+
   run-lint-code:
     executor: java-19-docker
     steps:
@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Set Docker tag
           command: |
-            export DOCKER_TAG="my-docker-image-$(date +'%Y-%m-%d-%H-%M-%S')" 
+            export DOCKER_TAG="$(date +'%Y-%m-%d-%H')" 
             echo "Docker tag is $DOCKER_TAG"
       - run:
           name: Log in to DockerHub
@@ -67,11 +67,11 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t $DOCKER_USERNAME/mock-project-for-circleCI:$DOCKER_TAG .  
+            docker build -t $DOCKER_USERNAME/mock-project-for-circle-ci:$DOCKER_TAG .
       - run:
           name: Push Docker image
           command: |
-            docker push $DOCKER_USERNAME/mock-project-for-circleCI:$DOCKER_TAG
+            docker push $DOCKER_USERNAME/mock-project-for-circle-ci:$DOCKER_TAG
 
 workflows:
   test-workflow:
