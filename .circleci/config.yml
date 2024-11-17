@@ -75,7 +75,6 @@ jobs:
             docker push $DOCKER_USERNAME/mock-project-for-circleCI:$DOCKER_TAG
 
 workflows:
-  version: 2
   test-workflow:
     jobs:
       - run-lint-code
@@ -88,8 +87,3 @@ workflows:
           filters:
             branches:
               only: main
-    schedule:
-      - cron: "0 */2 * * *"
-        filters:
-          branches:
-            only: main
