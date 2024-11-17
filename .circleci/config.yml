@@ -59,6 +59,7 @@ jobs:
           name: Set Docker tag
           command: |
             export DOCKER_TAG="$(date +'%Y-%m-%d-%H')" 
+            echo "DOCKER_TAG=$DOCKER_TAG" > env_vars
             echo "Docker tag is $DOCKER_TAG"
       - run:
           name: Log in to DockerHub
@@ -67,11 +68,12 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t $DOCKER_USERNAME/mock-project-for-circle-ci:"$DOCKER_TAG" .
+            source env_vars
+            docker build -t $DOCKER_USERNAME/mock-project-for-circle-ci:$DOCKER_TAG .
       - run:
           name: Push Docker image
           command: |
-            docker push $DOCKER_USERNAME/mock-project-for-circle-ci:"$DOCKER_TAG"
+            docker push $DOCKER_USERNAME/mock-project-for-circle-ci:$DOCKER_TAG
 
 workflows:
   test-workflow:
