@@ -44,7 +44,26 @@ jobs:
       - store_artifacts:
           path: target/QuestionsProcessorMock.jar
           destination: build-artifacts
-
+  build_and_push:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+          docker_layer_caching: true
+      - generate-image-tag:
+          command: |
+            export DOCKER_TAG="my-docker-image-$(date +'%Y-%m-%d-%H-%M-%S')"
+            echo "Docker tag is $DOCKER_TAG"
+      - docker/build:
+          image: mock-project-for-circleCI
+          tag: $DOCKER_TAG
+      - docker/push:
+          image: mock-project-for-circleCI
+          tag: $DOCKER_TAG
+          username: $DOCKER_USERNAME
+          password: $DOCKER_PASSWORD
 
 workflows:
   version: 2
