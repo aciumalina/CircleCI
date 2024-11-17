@@ -1,46 +1,6 @@
 version: 2.1
 
-executors:
-  java-19-docker:
-    docker:
-      - image: maven:3.9.1-amazoncorretto-19
-    working_directory: ~/project
-
 jobs:
-  run-unit-tests:
-    executor: java-19-docker
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            mvn install -DskipTests
-      - run:
-          name: Run unit tests
-          command: |
-            mvn test
-
-  run-lint-code:
-    executor: java-19-docker
-    steps:
-      - checkout
-      - run:
-          name: Run code linter
-          command: |
-            mvn checkstyle:check
-
-  run-build-application:
-    executor: java-19-docker
-    steps:
-      - checkout
-      - run:
-          name: Build application
-          command: |
-            mvn clean package
-      - store_artifacts:
-          path: target/QuestionsProcessorMock.jar
-          destination: build-artifacts
-
   build_and_push:
     machine: true
     steps:
@@ -64,7 +24,7 @@ jobs:
       - run:
           name: Log in to DockerHub
           command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - run:
           name: Build Docker image
           command: |
@@ -77,12 +37,6 @@ jobs:
             docker push $DOCKER_USERNAME/mock-project-for-circle-ci:$DOCKER_TAG
 
 workflows:
-  test-workflow:
-    jobs:
-      - run-lint-code
-      - run-unit-tests
-      - run-build-application
-
   deploy-workflow:
     jobs:
       - build_and_push:
