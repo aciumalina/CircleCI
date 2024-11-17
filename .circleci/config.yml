@@ -19,8 +19,7 @@ jobs:
           name: Run unit tests
           command: |
             mvn test
-      - store_test_results:
-          destination: tests-results
+            
   run-lint-code:
     executor: java-19-docker
     steps:
