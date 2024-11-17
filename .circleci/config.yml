@@ -41,41 +41,6 @@ jobs:
           path: target/QuestionsProcessorMock.jar
           destination: build-artifacts
 
-  build_and_push:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: Check for changes on main branch
-          command: |
-            git fetch origin main
-            if [[ $(git diff --name-only origin/main..HEAD) ]]; then
-              echo "Changes detected, proceeding with build..."
-            else
-              echo "No changes detected, skipping build."
-              exit 0
-            fi
-      - run:
-          name: Set Docker tag
-          command: |
-            export DOCKER_TAG="$(date +'%Y-%m-%d-%H-%M')" 
-            echo "DOCKER_TAG=$DOCKER_TAG" > env_vars
-            echo "Docker tag is $DOCKER_TAG"
-      - run:
-          name: Log in to DockerHub
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
-      - run:
-          name: Build Docker image
-          command: |
-            source env_vars
-            docker build -t $DOCKER_USERNAME/mock-project-for-circle-ci:$DOCKER_TAG .
-      - run:
-          name: Push Docker image
-          command: |
-            source env_vars
-            docker push $DOCKER_USERNAME/mock-project-for-circle-ci:$DOCKER_TAG
-
 workflows:
   test-workflow:
     jobs:
@@ -83,9 +48,3 @@ workflows:
       - run-unit-tests
       - run-build-application
 
-  deploy-workflow:
-    jobs:
-      - build_and_push:
-          filters:
-            branches:
-              only: main
