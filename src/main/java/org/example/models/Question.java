@@ -6,17 +6,34 @@ import lombok.Data;
 
 import java.util.UUID;
 
+/**
+ * Represents a question with content and a user ID.
+ */
 @Data
 public class Question {
+
+    /**
+     * The content of the question.
+     */
     private final String content;
 
+    /**
+     * The ID of the user who asked the question.
+     */
     private UUID userId;
+
+    /**
+     * Creates a new Question instance.
+     *
+     * @param questionContent the content of the question
+     * @param questionUserId the ID of the user who asked the question
+     */
     @JsonCreator
     public Question(
-            @JsonProperty("content") String content,
-            @JsonProperty("userId") UUID userId
+            @JsonProperty("content") final String questionContent,
+            @JsonProperty("userId") final UUID questionUserId
     ) {
-        this.content = content;
-        this.userId = userId;
+        this.content = questionContent;
+        this.userId = questionUserId;
     }
 }

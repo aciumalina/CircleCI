@@ -4,34 +4,99 @@ import org.example.models.Question;
 
 import java.util.HashMap;
 
-public class QuestionsStore {
-    public HashMap<Integer, Question> questions;
+/**
+ * Singleton class that stores questions.
+ */
 
-    public static int id = 0;
+public final class QuestionsStore {
 
-    private static QuestionsStore single_instance = null;
+    /**
+     * Sets the unique ID for questions.
+     *
+     * @param givenId the ID to set
+     */
 
-    private QuestionsStore(HashMap<Integer, Question> questions) {
-        this.questions = questions;
+    public static void setId(final int givenId) {
+        QuestionsStore.id = givenId;
     }
 
-    public static synchronized QuestionsStore getInstance()
-    {
-        if (single_instance == null)
-            single_instance = new QuestionsStore(new HashMap<>());
+    /**
+     * Stores the questions mapped by their unique IDs.
+     */
+    private final HashMap<Integer, Question> questions;
 
-        return single_instance;
+    /**
+     * The unique ID generator for questions.
+     */
+    private static int id = 0;
+
+    /**
+     * The singleton instance of the QuestionsStore.
+     */
+    private static QuestionsStore singleInstance = null;
+
+    /**
+     * Private constructor to enforce singleton pattern.
+     *
+     * @param questionsAsked the initial map of questions
+     */
+    private QuestionsStore(final HashMap<Integer, Question> questionsAsked) {
+        this.questions = questionsAsked;
     }
 
-    public Question addQuestion(Question question){
-        questions.put(++id,  question);
+    /**
+     * Returns the singleton instance of the QuestionsStore.
+     *
+     * @return the singleton instance
+     */
+    public static synchronized QuestionsStore getInstance() {
+        if (singleInstance == null) {
+            singleInstance = new QuestionsStore(new HashMap<>());
+        }
+        return singleInstance;
+    }
+
+    /**
+     * Adds a new question to the store.
+     *
+     * @param question the question to be added
+     * @return the added question
+     */
+    public Question addQuestion(final Question question) {
+        questions.put(++id, question);
         return question;
     }
 
-    public Question getQuestion(int id){
-        Question question = questions.get(id);
-        if (question != null)
+    /**
+     * Retrieves a question by its ID.
+     *
+     * @param questionId the ID of the question to retrieve
+     * @return the question associated with the given ID
+     * @throws RuntimeException if the question is not found
+     */
+    public Question getQuestion(final int questionId) {
+        Question question = questions.get(questionId);
+        if (question != null) {
             return question;
-        throw new RuntimeException("Question id was not present in the store");
+        }
+        throw new RuntimeException("Question ID was not present in the store");
+    }
+
+    /**
+     * Gets the list of all questions in the store.
+     *
+     * @return the list of questions
+     */
+    public HashMap<Integer, Question> getQuestions() {
+        return questions;
+    }
+
+    /**
+     * Gets the current unique ID.
+     *
+     * @return the current unique ID
+     */
+    public static int getId() {
+        return id;
     }
 }
