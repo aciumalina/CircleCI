@@ -14,7 +14,27 @@ jobs:
           name: Run unit tests
           command: |
             mvn test
-    executor: docker-executor
+
+  lint-code:
+    steps:
+      - checkout
+      - run:
+          name: Run code linter
+          command: |
+            mvn checkstyle:check
+
+  build-application:
+    steps:
+      - checkout
+      - run:
+          name: Build application
+          command: |
+            mvn clean package
+
+      - store_artifacts:
+          path: target/*.jar
+          destination: build-artifacts
+
 
 workflows:
   version: 2
