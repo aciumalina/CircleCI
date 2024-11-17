@@ -73,6 +73,7 @@ jobs:
       - run:
           name: Push Docker image
           command: |
+            source env_vars
             docker push $DOCKER_USERNAME/mock-project-for-circle-ci:$DOCKER_TAG
 
 workflows:
