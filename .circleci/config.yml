@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Set Docker tag
           command: |
-            export DOCKER_TAG="$(date +'%Y-%m-%d-%H')" 
+            export DOCKER_TAG="$(date +'%Y-%m-%d-%H-%M')" 
             echo "DOCKER_TAG=$DOCKER_TAG" > env_vars
             echo "Docker tag is $DOCKER_TAG"
       - run:
@@ -84,6 +84,12 @@ workflows:
       - run-build-application
 
   deploy-workflow:
+    triggers:
+        - schedule:
+            cron: "0 */2 * * *"
+            filters:
+              branches:
+                only: main
     jobs:
       - build_and_push:
           filters:
